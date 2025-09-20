@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title | default('Slknow Sleep Companion') }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+    </style>
+  </head>
+  <body class="relative min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-slate-100 overflow-hidden">
+    <div class="pointer-events-none absolute -top-40 left-1/2 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-indigo-500/40 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-20 -left-20 h-[28rem] w-[28rem] rounded-full bg-cyan-500/30 blur-3xl"></div>
+    <div class="pointer-events-none absolute top-1/3 -right-24 h-[24rem] w-[24rem] rounded-full bg-purple-500/30 blur-2xl"></div>
+
+    <header class="relative z-10 flex items-center justify-between px-6 py-4">
+      <a href="{{ url_for('index') }}" class="text-xl font-semibold tracking-tight text-white drop-shadow">Slknow</a>
+      {% if session.get('user_id') %}
+        <nav class="flex items-center gap-3 text-sm">
+          <a href="{{ url_for('dashboard') }}" class="rounded-full bg-white/10 px-3 py-1.5 text-white backdrop-blur transition hover:bg-white/20">
+            Dashboard
+          </a>
+          <a href="{{ url_for('logout') }}" class="rounded-full border border-white/20 px-3 py-1.5 text-white/80 backdrop-blur hover:text-white">
+            Logout
+          </a>
+        </nav>
+      {% else %}
+        <nav class="flex items-center gap-3 text-sm">
+          <a href="{{ url_for('login') }}" class="rounded-full bg-white/10 px-3 py-1.5 text-white backdrop-blur transition hover:bg-white/20">
+            Log in
+          </a>
+          <a href="{{ url_for('signup') }}" class="rounded-full border border-white/20 px-3 py-1.5 text-white/80 backdrop-blur hover:text-white">
+            Sign up
+          </a>
+        </nav>
+      {% endif %}
+    </header>
+
+    <main class="relative z-10 flex min-h-[calc(100vh-5rem)] items-center justify-center px-4 pb-12">
+      <div class="w-full max-w-5xl">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="mb-6 space-y-2">
+              {% for message in messages %}
+                <div class="rounded-2xl border border-orange-400/40 bg-orange-500/20 px-4 py-3 text-sm text-orange-100 backdrop-blur">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+  </body>
+</html>

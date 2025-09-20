@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="space-y-8">
+  <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+    <div class="overflow-hidden rounded-3xl border border-white/15 bg-white/10 p-8 backdrop-blur-2xl shadow-[0_20px_60px_rgba(8,17,34,0.55)]">
+      <div class="absolute inset-x-10 -top-28 h-44 rounded-full bg-gradient-to-r from-cyan-400/30 to-purple-500/30 blur-3xl"></div>
+      <div class="relative flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <p class="text-xs uppercase tracking-[0.5em] text-white/50">Tonight?s plan</p>
+          <h1 class="mt-3 text-3xl font-semibold text-white">Welcome back{% if user and user['full_name'] %}, {{ user['full_name'] }}{% endif %}</h1>
+          <p class="mt-2 max-w-xl text-sm text-white/70">
+            Slknow is mixing a calming soundscape while watching your environment and biometrics. These live
+            readiness signals guide subtle adjustments through the night.
+          </p>
+        </div>
+        <div class="rounded-3xl border border-white/15 bg-white/5 p-4 text-center text-white/70 backdrop-blur-xl">
+          <p class="text-xs uppercase tracking-[0.4em] text-white/60">Link status</p>
+          <div class="mt-3 flex flex-col gap-2 text-sm">
+            <div class="flex items-center justify-between gap-6">
+              <span class="flex items-center gap-2">
+                <span class="inline-flex h-2.5 w-2.5 rounded-full {% if user and user['slknow_connected'] %}bg-emerald-400{% else %}bg-orange-400{% endif %}"></span>
+                Slknow hub
+              </span>
+              <span class="font-semibold text-white">{% if user and user['slknow_connected'] %}Connected{% else %}Pending{% endif %}</span>
+            </div>
+            <div class="flex items-center justify-between gap-6">
+              <span class="flex items-center gap-2">
+                <span class="inline-flex h-2.5 w-2.5 rounded-full {% if user and user['health_app'] %}bg-emerald-300{% else %}bg-orange-400{% endif %}"></span>
+                Biometrics
+              </span>
+              <span class="font-semibold text-white">{% if user and user['health_app'] %}{{ user['health_app'].replace('_', ' ') | title }}{% else %}Not linked{% endif %}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="grid gap-4">
+      <div class="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur-2xl shadow-lg shadow-blue-500/30">
+        <p class="text-xs uppercase tracking-[0.4em] text-white/60">Sleep score</p>
+        <div class="mt-3 flex items-baseline gap-2">
+          <span class="text-4xl font-semibold text-white">{{ insights.sleep_score }}</span>
+          <span class="text-sm text-white/60">/ 100</span>
+        </div>
+        <p class="mt-2 text-sm text-white/70">Sound blends held steady through 92% of the night. Minor snore peaks resolved in 3 minutes.</p>
+      </div>
+      <div class="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur-2xl shadow-lg shadow-purple-500/30">
+        <p class="text-xs uppercase tracking-[0.4em] text-white/60">Tonight?s focus</p>
+        <ul class="mt-3 space-y-2 text-sm text-white/70">
+          <li>? Maintain room at {{ insights.bedroom_temp }} with gentle airflow</li>
+          <li>? Balance humidity near {{ insights.bedroom_humidity }}</li>
+          <li>? Keep heart rate hovering around {{ insights.avg_bpm }} bpm</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-3">
+    <div class="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur-2xl shadow-lg shadow-cyan-500/25">
+      <p class="text-xs uppercase tracking-[0.4em] text-white/60">Heart rhythm</p>
+      <div class="mt-4 text-4xl font-semibold text-white">{{ insights.avg_bpm }}<span class="ml-1 text-base font-normal text-white/60">bpm</span></div>
+      <p class="mt-2 text-sm text-white/70">Sleep onset was 18 minutes. Heart rate variability steady at {{ insights.hrv }} ms.</p>
+    </div>
+    <div class="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur-2xl shadow-lg shadow-emerald-500/25">
+      <p class="text-xs uppercase tracking-[0.4em] text-white/60">Soundscape mix</p>
+      <ul class="mt-4 space-y-2 text-sm text-white/75">
+        <li class="flex items-center justify-between"><span>Ocean waves</span><span class="rounded-full bg-white/10 px-3 py-1 text-xs text-white/60">60%</span></li>
+        <li class="flex items-center justify-between"><span>Forest birds</span><span class="rounded-full bg-white/10 px-3 py-1 text-xs text-white/60">25%</span></li>
+        <li class="flex items-center justify-between"><span>Brown noise</span><span class="rounded-full bg-white/10 px-3 py-1 text-xs text-white/60">15%</span></li>
+      </ul>
+      <p class="mt-3 text-xs text-white/60">Auto-adjusted after light snoring at 2:14 AM.</p>
+    </div>
+    <div class="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur-2xl shadow-lg shadow-rose-500/25">
+      <p class="text-xs uppercase tracking-[0.4em] text-white/60">Environmental cues</p>
+      <ul class="mt-4 space-y-3 text-sm text-white/75">
+        <li class="flex items-center justify-between"><span>Bedroom temp</span><span class="font-semibold text-white">{{ insights.bedroom_temp }}</span></li>
+        <li class="flex items-center justify-between"><span>Humidity</span><span class="font-semibold text-white">{{ insights.bedroom_humidity }}</span></li>
+        <li class="flex items-center justify-between"><span>Noise floor</span><span class="font-semibold text-white">32 dBA</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}

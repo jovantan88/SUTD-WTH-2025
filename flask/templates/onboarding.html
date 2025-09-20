@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="mx-auto max-w-4xl">
+  <div class="overflow-hidden rounded-3xl border border-white/15 bg-white/10 p-10 backdrop-blur-2xl shadow-[0_30px_80px_rgba(8,17,34,0.55)]">
+    <div class="absolute inset-x-10 -top-32 h-48 rounded-full bg-gradient-to-r from-indigo-400/30 via-blue-500/40 to-purple-500/30 blur-3xl"></div>
+    <div class="relative">
+      <header class="mb-10 text-center">
+        <p class="text-xs uppercase tracking-[0.5em] text-white/50">Onboarding</p>
+        <h1 class="mt-3 text-3xl font-semibold text-white">Let?s sync Slknow with your sleep ecosystem</h1>
+        <p class="mt-2 text-sm text-white/70">We?ll connect your device and data sources so Slknow can adapt each night automatically.</p>
+      </header>
+      <form method="post" class="space-y-12">
+        <section class="space-y-4">
+          <div class="flex items-start gap-4 rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur-xl shadow-lg shadow-indigo-500/20">
+            <div class="rounded-2xl bg-cyan-500/30 p-3 text-cyan-100">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-lg font-semibold text-white">Connect your Slknow hub</h2>
+              <p class="mt-1 text-sm text-white/70">Confirm that your bedside unit is powered and ready. We use this connection to orchestrate your ambient soundscape and gather room vitals.</p>
+              <label class="mt-4 inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-5 py-2 text-sm text-white/80 backdrop-blur transition hover:border-cyan-300/60 hover:text-white">
+                <input type="checkbox" name="slknow_connected" value="yes" class="h-4 w-4 rounded border-white/30 bg-slate-900/50 text-cyan-400 focus:ring-cyan-400" {% if user and user['slknow_connected'] %}checked{% endif %} />
+                <span>I can see the "Slknow connected" halo light</span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section class="space-y-4">
+          <div class="flex items-start gap-4 rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur-xl shadow-lg shadow-purple-500/20">
+            <div class="rounded-2xl bg-purple-500/30 p-3 text-purple-100">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.114 60.114 0 00-.491 6.347A48.62 48.62 0 0112 15.75c2.708 0 5.342.235 7.977.694.194-2.154-.024-4.351-.642-6.497m-15.075.2a50.389 50.389 0 01-.457-5.142A48.62 48.62 0 0112 6.75c2.708 0 5.342.235 7.977.694a50.39 50.39 0 01-.457 5.142m-15.075-.2A50.162 50.162 0 0112 12.75a50.162 50.162 0 007.555-1.906M6 18.75v-1.005a3 3 0 013-3h6a3 3 0 013 3v1.005M9.75 10.5a2.25 2.25 0 104.5 0 2.25 2.25 0 00-4.5 0z" />
+              </svg>
+            </div>
+            <div class="w-full">
+              <h2 class="text-lg font-semibold text-white">Pair a biometric data source</h2>
+              <p class="mt-1 text-sm text-white/70">Slknow adapts your ambience with heart-rate and recovery signals. Choose the platform you already trust.</p>
+              <div class="mt-5 grid gap-3 sm:grid-cols-2">
+                {% set options = [
+                  ('Apple Health', 'apple_health'),
+                  ('Oura Ring', 'oura_ring'),
+                  ('Fitbit', 'fitbit'),
+                  ('Garmin Connect', 'garmin'),
+                  ('Whoop', 'whoop'),
+                  ('Other / Not sure yet', 'other')
+                ] %}
+                {% for label, value in options %}
+                  <label class="flex items-center gap-3 rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white/80 backdrop-blur transition hover:border-purple-300/50 hover:text-white">
+                    <input
+                      type="radio"
+                      name="health_app"
+                      value="{{ value }}"
+                      class="h-4 w-4 border-white/30 bg-slate-900/50 text-purple-400 focus:ring-purple-400"
+                      {% if user and user['health_app'] == value %}checked{% endif %}
+                      required
+                    />
+                    <span>{{ label }}</span>
+                  </label>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
+          <a href="{{ url_for('dashboard') }}" class="text-sm text-white/60 hover:text-white/80">Skip for now</a>
+          <button type="submit" class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 px-6 py-3 text-base font-semibold text-slate-950 shadow-lg shadow-blue-500/30 transition hover:from-cyan-300 hover:via-blue-400 hover:to-purple-400">
+            Finish onboarding
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div id="intro-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 px-4 py-8 backdrop-blur-lg">
+  <div class="relative w-full max-w-lg overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-8 text-center text-white shadow-[0_30px_80px_rgba(8,17,34,0.65)] backdrop-blur-2xl">
+    <div class="absolute inset-x-8 -top-24 h-40 rounded-full bg-gradient-to-r from-cyan-400/40 to-purple-500/40 blur-3xl"></div>
+    <div class="relative space-y-4">
+      <h2 class="text-3xl font-semibold">Welcome to Slknow</h2>
+      <p class="text-sm text-white/70">
+        We blend ambience, biometrics, and environment cues to craft deeper, healthier sleep. Take a minute
+        to connect your ecosystem and we?ll handle the rest tonight.
+      </p>
+      <button
+        type="button"
+        id="modal-close"
+        class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-300 via-cyan-400 to-blue-500 px-6 py-2.5 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-400/30 transition hover:from-emerald-200 hover:via-cyan-300 hover:to-blue-400"
+      >
+        Let's begin
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('intro-modal');
+  const closeButton = document.getElementById('modal-close');
+  if (closeButton) {
+    closeButton.addEventListener('click', () => {
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => modal.remove(), 240);
+    });
+  }
+</script>
+{% endblock %}
