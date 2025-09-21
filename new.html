@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sleep Streak Game</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: #111;
+      color: #fff;
+      text-align: center;
+    }
+    .game {
+      margin: 50px auto;
+      padding: 20px;
+      width: 250px;
+      background: #add8e6;
+      border-radius: 10px;
+    }
+    img {
+      width: 200px;
+      height: 200px;
+      image-rendering: pixelated;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="game">
+    <h2>Sleep streak</h2>
+    <div id="hearts">❤️❤️❤️</div>
+    <img id="pet" src="https://i.ibb.co/JHcm35h/frame4.png" alt="Pet">
+    <p id="status">0 days</p>
+    <button onclick="sleepWell()">✅ Slept well</button>
+    <button onclick="missSleep()">❌ Missed sleep</button>
+    <button onclick="resetGame()">🔄 Reset</button>
+  </div>
+
+  <script>
+    let streak = 0;
+    let lives = 3;
+
+    const petImg = document.getElementById("pet");
+    const status = document.getElementById("status");
+    const hearts = document.getElementById("hearts");
+
+    function updateDisplay() {
+      hearts.textContent = "❤️".repeat(lives) + "🤍".repeat(3 - lives);
+
+      if (lives === 0) {
+        petImg.src = "https://github.com/jovantan88/SUTD-WTH-2025/blob/main/4.png?raw=true"; // Dead
+        status.textContent = "Streak broken";
+        return;
+      }
+
+      if (streak < 3) {
+        petImg.src = "https://github.com/jovantan88/SUTD-WTH-2025/blob/main/1.png?raw=true"; // Sprout
+        status.textContent = streak + " days";
+      } else if (streak < 7) {
+        petImg.src = "https://github.com/jovantan88/SUTD-WTH-2025/blob/main/2.png?raw=true"; // Flower
+        status.textContent = streak + " days";
+      } else {
+        petImg.src = "https://github.com/jovantan88/SUTD-WTH-2025/blob/main/3.png?raw=true"; // Sad flower
+        status.textContent = "1 day missed!";
+      }
+    }
+
+    function sleepWell() {
+      streak++;
+      updateDisplay();
+    }
+
+    function missSleep() {
+      lives--;
+      updateDisplay();
+    }
+
+    function resetGame() {
+      streak = 0;
+      lives = 3;
+      updateDisplay();
+    }
+
+    updateDisplay();
+  </script>
+</body>
+</html>
